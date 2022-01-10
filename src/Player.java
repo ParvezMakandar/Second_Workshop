@@ -18,18 +18,6 @@ public class Player
         return firstname;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public int getPlayerTurn() {
         return playerTurn;
     }

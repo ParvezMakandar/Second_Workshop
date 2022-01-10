@@ -4,13 +4,13 @@ import java.util.stream.Collectors;
 public class DeckOfCards
 {
 
-    private static String[] suit = { "Spades", "Hearts", "Diamond", "Clubs" };
-    private static String[] rank = { "Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King" };
-    private static String[][] deckOfCards = { suit, rank };
-    private static Card[] deck = new Card[52];
-    private static List<Player> playerList = new ArrayList<Player>();
-    private static Scanner sc = new Scanner(System.in);
-    Map<String, HashMap<String, Integer>> playerCardInfo = new HashMap<String, HashMap<String, Integer>>();
+    private static final String[] suit = { "Spades", "Hearts", "Diamond", "Clubs" };
+    private static final String[] rank = { "Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King" };
+    private static final String[][] deckOfCards = { suit, rank };
+    private static final Card[] deck = new Card[52];
+    private static final List<Player> playerList = new ArrayList<>();
+    private static final Scanner sc = new Scanner(System.in);
+    Map<String, HashMap<String, Integer>> playerCardInfo = new HashMap<>();
 
     public void setupDeckOfCards() {
         int i = 0;
@@ -34,8 +34,8 @@ public class DeckOfCards
                 String ln = sc.nextLine();
                 Player player = new Player(fn, ln);
                 playerList.add(player);
-                for (int j = 0; j < playerList.size(); j++) {
-                    System.out.println(playerList.get(j));
+                for (Player value : playerList) {
+                    System.out.println(value);
                 }
             }
         }
@@ -76,12 +76,6 @@ public class DeckOfCards
     }
 
 
-    public void printDeck() {
-        for (int i = 0; i < deck.length; i++) {
-            System.out.println(deck[i]);
-        }
-    }
-
     public void orderPlayerTurn(int numberOfPlayers) {
         System.out.println("Enter players order");
         for (int i = 0; i < numberOfPlayers; i++) {
@@ -91,18 +85,18 @@ public class DeckOfCards
     }
 
     public void displayPlayerCard() {
-        for (int i = 0; i < playerList.size(); i++) {
-            HashMap<String, Integer> cardInfo = new HashMap<String, Integer>();
-            Card[] cardArray = playerList.get(i).getCard();
-            for (int j = 0; j < cardArray.length; j++) {
-                if (cardInfo.containsKey(cardArray[j].getSuit())) {
-                    Integer value = cardInfo.get(cardArray[j].getSuit());
-                    cardInfo.put(cardArray[j].getSuit(), value + 1);
+        for (Player player : playerList) {
+            HashMap<String, Integer> cardInfo = new HashMap<>();
+            Card[] cardArray = player.getCard();
+            for (Card card : cardArray) {
+                if (cardInfo.containsKey(card.getSuit())) {
+                    Integer value = cardInfo.get(card.getSuit());
+                    cardInfo.put(card.getSuit(), value + 1);
                 } else {
-                    cardInfo.put(cardArray[j].getSuit(), Integer.valueOf(1));
+                    cardInfo.put(card.getSuit(), 1);
                 }
             }
-            playerCardInfo.put(playerList.get(i).getFirstname(), cardInfo);
+            playerCardInfo.put(player.getFirstname(), cardInfo);
         }
         for (Map.Entry<String, HashMap<String, Integer>> entry : playerCardInfo.entrySet())
             System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
@@ -112,10 +106,10 @@ public class DeckOfCards
         for (int i = 0; i < playerList.size(); i++) {
             System.out.println("Player" + (i + 1) + " cards");
             Card[] cardArray = playerList.get(i).getCard();
-            Arrays.sort(cardArray, new SortbySuit());
+            Arrays.sort(cardArray, new Sort_by_Suit());
             // Arrays.sort(cardArray, new SortbyRank());
-            for (int j = 0; j < cardArray.length; j++) {
-                System.out.println(cardArray[j]);
+            for (Card card : cardArray) {
+                System.out.println(card);
             }
             System.out.println();
         }
@@ -123,25 +117,14 @@ public class DeckOfCards
 
 }
 
-class SortbySuit implements Comparator<Card> {
+class Sort_by_Suit implements Comparator<Card> {
 
     @Override
     public int compare(Card card1, Card card2) {
-        if (card1.getSuit() == card2.getSuit()) {
+        if (Objects.equals(card1.getSuit(), card2.getSuit())) {
             return card1.getRank().compareTo(card2.getRank());
         }
         return card1.getSuit().compareTo(card2.getSuit());
     }
 }
 
-class SortbyRank implements Comparator<Card> {
-
-    @Override
-    public int compare(Card card1, Card card2) {
-        if (card1.getRank() == card2.getRank()) {
-            return card1.getSuit().compareTo(card2.getSuit());
-        }
-        return card1.getRank().compareTo(card2.getRank());
-    }
-
-}

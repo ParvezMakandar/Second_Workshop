@@ -2,7 +2,6 @@ import java.util.Scanner;
 
 public class DeckOfCardsMain
 {
-
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter number of players");
@@ -17,5 +16,4 @@ public class DeckOfCardsMain
         deckOfCard.displayCardSortByRank();
         sc.close();
     }
-
 }
